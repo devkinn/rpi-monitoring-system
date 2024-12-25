@@ -1,0 +1,21 @@
+groups:
+  - name: node_rules
+    rules:
+      - record: node:cpu_usage:percentage 
+        expr: 100 - (avg by (instance) (irate(node_cpu_seconds_total{job="node", mode="idle"}[5m])) * 100)
+      - record: node:memory_usage:percentage 
+        expr: (node_memory_MemTotal_bytes{job="node"} - (node_memory_MemFree_bytes{job="node"} + node_memory_Cached_bytes{job="node"} + node_memory_Buffers_bytes{job="node"})) / node_memory_MemTotal_bytes{job="node"} * 100
+      - record: node:filesystem_usage:percentage 
+        expr: (node_filesystem_size_bytes{job="node", mountpoint="/"} - node_filesystem_free_bytes{job="node", mountpoint="/"}) / node_filesystem_size_bytes{job="node", mountpoint="/"} * 100
+      - record: node:network_traffic:kbs
+        expr: sum by (instance) (rate(node_network_receive_bytes_total{job="node"}[5m]) + rate(node_network_transmit_bytes_total{job="node"}[5m])) * 8 / 1000
+  - name: rpi_rules
+    rules:
+      - record: rpi:cpu_usage:percentage
+        expr: 100 - (avg by (instance) (irate(node_cpu_seconds_total{job="rpi", mode="idle"}[5m])) * 100)
+      - record: rpi:memory_usage:percentage
+        expr: (node_memory_MemTotal_bytes{job="rpi"} - (node_memory_MemFree_bytes{job="rpi"} + node_memory_Cached_bytes{job="rpi"} + node_memory_Buffers_bytes{job="rpi"})) / node_memory_MemTotal_bytes{job="rpi"} * 100
+      - record: rpi:filesystem_usage:percentage
+        expr: (node_filesystem_size_bytes{job="rpi", mountpoint="/"} - node_filesystem_free_bytes{job="rpi", mountpoint="/"}) / node_filesystem_size_bytes{job="rpi", mountpoint="/"} * 100
+      - record: rpi:network_traffic:kbs
+        expr: sum by (instance) (rate(node_network_receive_bytes_total{job="rpi"}[5m]) + rate(node_network_transmit_bytes_total{job="rpi"}[5m])) * 8 / 1000

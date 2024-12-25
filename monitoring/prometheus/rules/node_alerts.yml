@@ -1,0 +1,10 @@
+groups:
+  - name: node_alerts
+    rules:
+      - alert: InstancesUnavailable
+        expr: up{job="node"} == 0
+        for: 10s
+        labels:
+          severity: critical
+        annotations:
+          summary: Host {{ $labels.instance }} is unavailable!
