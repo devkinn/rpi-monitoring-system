@@ -1,0 +1,10 @@
+- name: Deploy monitoring system to Raspberry Pi
+  hosts: raspberry_pi
+  tasks:
+    - name: Copy monitoring directory to Raspberry Pi
+      ansible.builtin.copy:
+        src: ../monitoring/
+        dest: /home/{{ ansible_user }}/monitoring/
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: '0755'

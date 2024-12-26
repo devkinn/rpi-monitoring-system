@@ -1,0 +1,7 @@
+[virtual_servers]
+server1 ansible_host=192.168.10.21 ansible_user=admin1
+server2 ansible_host=192.168.10.22 ansible_user=admin2
+server3 ansible_host=192.168.10.23 ansible_user=admin3
+
+[raspberry_pi]
+raspberry_pi ansible_host=192.168.10.10 ansible_user=monitor
