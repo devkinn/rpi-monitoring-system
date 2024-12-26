@@ -4,7 +4,7 @@ import time
 import argparse
 
 URLS = ["http://192.168.10.21:5000/","http://192.168.10.22:5000/","http://192.168.10.23:5000/"]
-DELAY = (0.1, 0.5)
+DELAY = (0.1, 0.3)
 
 def generate_requests(target_urls, total_requests, delay_range):
 	successful_requests = 0

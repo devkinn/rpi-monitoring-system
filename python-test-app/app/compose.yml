@@ -1,0 +1,16 @@
+services:
+  app:
+    build: .
+    container_name: python-test-app
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+      - "8000:8000"
+    environment:
+      - FLASK_APP=app.py
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
