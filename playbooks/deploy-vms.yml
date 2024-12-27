@@ -3,7 +3,7 @@
   tasks:
     - name: Copy app directory to remote servers
       ansible.builtin.copy:
-        src: ./python-test-app/app/
+        src: ../python-test-app/app/
         dest: /home/{{ ansible_user }}/app/
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"

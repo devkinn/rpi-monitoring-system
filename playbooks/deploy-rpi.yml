@@ -8,3 +8,7 @@
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
         mode: '0755'
+    - name: Run docker compose to deploy the monitoring system
+      command: docker compose up -d
+      args:
+        chdir: /home/{{ ansible_user }}/monitoring

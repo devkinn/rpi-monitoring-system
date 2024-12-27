@@ -6,8 +6,8 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ${PWD}/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - ${PWD}/prometheus/rules:/etc/prometheus/rules
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/rules:/etc/prometheus/rules
       - prometheus-data:/prometheus
 
   grafana:
@@ -17,7 +17,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ${PWD}/grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/provisioning:/etc/grafana/provisioning
       - grafana-data:/var/lib/grafana
     depends_on:
       - prometheus
@@ -29,7 +29,7 @@ services:
     ports:
       - "9093:9093"
     volumes:
-      - ${PWD}/alertmanager:/etc/alertmanager
+      - ./alertmanager:/etc/alertmanager
     command:
       - "--config.file=/etc/alertmanager/alertmanager.yml"
     depends_on:
