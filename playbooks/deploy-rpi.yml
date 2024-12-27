@@ -9,6 +9,6 @@
         group: "{{ ansible_user }}"
         mode: '0755'
     - name: Run docker compose to deploy the monitoring system
-      command: docker compose up -d
+      command: docker compose up -d --force-recreate
       args:
         chdir: /home/{{ ansible_user }}/monitoring
