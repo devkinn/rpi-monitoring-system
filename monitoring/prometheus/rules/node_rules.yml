@@ -4,11 +4,12 @@ groups:
       - record: node:cpu_usage:percentage 
         expr: 100 - (avg by (instance) (irate(node_cpu_seconds_total{job="node", mode="idle"}[5m])) * 100)
       - record: node:memory_usage:percentage 
-        expr: (node_memory_MemTotal_bytes{job="node"} - (node_memory_MemFree_bytes{job="node"} + node_memory_Cached_bytes{job="node"} + node_memory_Buffers_bytes{job="node"})) / node_memory_MemTotal_bytes{job="node"} * 100
+        expr: ((node_memory_MemTotal_bytes{job="node"} - (node_memory_MemAvailable_bytes{job="node"})) / node_memory_MemTotal_bytes{job="node"}) * 100
       - record: node:filesystem_usage:percentage 
         expr: (node_filesystem_size_bytes{job="node", mountpoint="/"} - node_filesystem_free_bytes{job="node", mountpoint="/"}) / node_filesystem_size_bytes{job="node", mountpoint="/"} * 100
-      - record: node:network_traffic:kbs
-        expr: sum by (instance) (rate(node_network_receive_bytes_total{job="node"}[5m]) + rate(node_network_transmit_bytes_total{job="node"}[5m])) * 8 / 1000
+      - record: node:dropped_packets:rate
+        expr: (rate(node_network_receive_drop_total{job="node", device="enp0s3"}[5m]) + rate(node_network_transmit_drop_total{job="node", device="enp0s3"}[5m]))
+        
   - name: rpi_rules
     rules:
       - record: rpi:cpu_usage:percentage

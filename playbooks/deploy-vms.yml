@@ -1,6 +1,12 @@
 - name: Deploy app using Docker Compose
   hosts: virtual_servers
   tasks:
+    - name: Stop the container if it exists
+      command: docker compose down
+      args:
+        chdir: /home/{{ ansible_user }}/app/
+      ignore_errors: true
+
     - name: Copy app directory to remote servers
       ansible.builtin.copy:
         src: ../python-test-app/app/
@@ -11,6 +17,9 @@
 
     - name: Build and start the app using Docker Compose
       ansible.builtin.command:
-        cmd: docker compose up -d
+        cmd: docker compose up --build -d
       args:
         chdir: /home/{{ ansible_user }}/app/
+
+    - name: Remove old Docker images
+      command: docker image prune -af
