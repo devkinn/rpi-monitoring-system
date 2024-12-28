@@ -1,0 +1,13 @@
+groups:
+  - name: rpi_rules
+    rules:
+      - record: rpi:cpu_usage:percentage 
+        expr: 100 - (avg by (instance) (irate(rpi_cpu_seconds_total{job="rpi", mode="idle"}[5m])) * 100)
+      - record: rpi:memory_usage:percentage 
+        expr: ((rpi_memory_MemTotal_bytes{job="rpi"} - (rpi_memory_MemAvailable_bytes{job="rpi"})) / rpi_memory_MemTotal_bytes{job="rpi"}) * 100
+      - record: rpi:filesystem_usage:percentage 
+        expr: (rpi_filesystem_size_bytes{job="rpi", mountpoint="/"} - rpi_filesystem_free_bytes{job="rpi", mountpoint="/"}) / rpi_filesystem_size_bytes{job="rpi", mountpoint="/"} * 100
+      - record: rpi:dropped_packets:rate
+        expr: (rate(rpi_network_receive_drop_total{job="rpi", device="eth0.10"}[5m]) + rate(rpi_network_transmit_drop_total{job="rpi", device="eth0.10"}[5m]))
+      - record: rpi:temperature:no_op
+        expr: node_thermal_zone_temp{job="rpi", type="cpu-thermal"}

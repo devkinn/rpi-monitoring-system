@@ -1,10 +1,38 @@
 groups:
   - name: node_alerts
     rules:
-      - alert: InstancesUnavailable
+      - alert: NodeUnavailable
         expr: up{job="node"} == 0
-        for: 10s
+        for: 1m
         labels:
           severity: critical
         annotations:
-          summary: Host {{ $labels.instance }} is unavailable!
+          summary: Node {{ $labels.instance }} is unavailable!
+      - alert: HighNodeCPU
+        expr: node:cpu_usage:percentage > 80
+        for: 30m
+        labels:
+          severity: warning
+        annotations:
+          summary: Node {{ $labels.instance }} had high CPU usage for 30 minutes.
+      - alert: HighNodeRAM
+        expr: node:memory_usage:percentage > 80
+        for: 30m
+        labels:
+          severity: warning
+        annotations:
+          summary: Node {{ $labels.instance }} had high RAM usage for 30 minutes.
+      - alert: HighNodeDiskUsage
+        expr: node:filesystem_usage:percentage > 90
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: Node {{ $labels.instance }} has 90% of disk space used.
+      - alert: NodeDiskWillFillIn8Hours
+        expr: predict_linear(node_filesystem_free_bytes{job="node", mountpoint="/"}[1h], 8*3600) < 0
+        for: 10m
+        labels:
+          severity: critical
+        annotations:
+          summary: Disk on node {{ $labels.instance }} will fill in 8 hours.

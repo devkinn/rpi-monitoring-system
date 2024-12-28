@@ -1,0 +1,7 @@
+groups:
+  - name: app_rules
+    rules:
+      - record: app:errors:rate
+        expr: rate(app_errors_total[5m])
+      - record: app:response_time:rate_quantile09
+        expr: histogram_quantile(0.9, rate(app_request_duration_seconds_bucket[5m]))

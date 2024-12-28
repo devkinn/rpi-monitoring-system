@@ -1,0 +1,38 @@
+groups:
+  - name: rpi_alerts
+    rules:
+      - alert: HighRpiCPU
+        expr: rpi:cpu_usage:percentage > 80
+        for: 30m
+        labels:
+          severity: warning
+        annotations:
+          summary: Raspberry Pi ({{ $labels.instance }}) had high CPU usage for 30 minutes.
+      - alert: HighRpiRAM
+        expr: rpi:memory_usage:percentage > 80
+        for: 30m
+        labels:
+          severity: warning
+        annotations:
+          summary: Raspberry Pi ({{ $labels.instance }}) had high RAM usage for 30 minutes.
+      - alert: HighRpiDiskUsage
+        expr: rpi:filesystem_usage:percentage > 90
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: Raspberry Pi ({{ $labels.instance }}) has 90% of disk space used.
+      - alert: RpiDiskWillFillIn8Hours
+        expr: predict_linear(rpi_filesystem_free_bytes{job="rpi", mountpoint="/"}[1h], 8*3600) < 0
+        for: 10m
+        labels:
+          severity: critical
+        annotations:
+          summary: Disk on Raspberry Pi ({{ $labels.instance }}) will fill in 8 hours.
+      - alert: HighRpiCPUTemperature
+        expr: node_thermal_zone_temp{job="rpi", type="cpu-thermal"} > 60
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: Temperature of Raspberry Pi CPU ({{ $labels.instance }}) was above 60 degrees Celsius for 10 minutes.
