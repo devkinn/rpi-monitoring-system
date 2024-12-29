@@ -1,0 +1,12 @@
+services:
+  app:
+    build: .
+    container_name: testing-exporter
+    ports:
+      - "9500:8000"
+    networks:
+      - exporter-network
+
+networks:
+  exporter-network:
+    driver: bridge
