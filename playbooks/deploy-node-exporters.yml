@@ -1,0 +1,14 @@
+- name: Deploy Node Exporters to VMS for capacity testing
+  hosts: virtual_servers
+  tasks:
+    - name: Copy the deployment script to the VM
+      ansible.builtin.copy:
+        src: ../create-node-exporter-containers.sh
+        dest: ~/create-node-exporter-containers.sh
+        mode: '0755'
+
+    - name: Run the deployment script
+      ansible.builtin.command:
+        cmd: "~/create-node-exporter-containers.sh {{ num_containers }}"
+      vars:
+        num_containers: 10

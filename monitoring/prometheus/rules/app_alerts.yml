@@ -10,14 +10,14 @@ groups:
           summary: Application on node {{ $labels.instance }} is unavailable!
       - alert: HighErrorRate
         expr: app:errors:rate > 0.2
-        for: 5m
+        for: 1m
         labels:
           severity: warning
         annotations:
           summary: Application on node {{ $labels.instance }} had high error rate for 5 minutes.
       - alert: LongResponseTime
         expr: app:response_time:rate_quantile09 > 1
-        for: 5m
+        for: 1m
         labels:
           severity: warning
         annotations:

@@ -1,6 +1,6 @@
 global:
-  scrape_interval:     15s
-  evaluation_interval: 15s
+  scrape_interval:     5s
+  evaluation_interval: 5s
 
 rule_files:
     - "rules/*_rules.yml"
@@ -31,4 +31,10 @@ scrape_configs:
     file_sd_configs:
       - files:
         - 'targets/app.json'
+        refresh_interval: 5m
+
+  - job_name: 'scaling'
+    file_sd_configs:
+      - files:
+        - 'targets/scaling.json'
         refresh_interval: 5m

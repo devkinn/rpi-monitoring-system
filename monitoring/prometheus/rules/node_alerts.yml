@@ -10,7 +10,7 @@ groups:
           summary: Node {{ $labels.instance }} is unavailable!
       - alert: HighNodeCPU
         expr: node:cpu_usage:percentage > 80
-        for: 30m
+        for: 1m
         labels:
           severity: warning
         annotations:
