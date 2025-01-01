@@ -6,6 +6,7 @@ groups:
         for: 30m
         labels:
           severity: warning
+          source: raspberry_pi
         annotations:
           summary: Raspberry Pi ({{ $labels.instance }}) had high CPU usage for 30 minutes.
       - alert: HighRpiRAM
@@ -13,6 +14,7 @@ groups:
         for: 30m
         labels:
           severity: warning
+          source: raspberry_pi
         annotations:
           summary: Raspberry Pi ({{ $labels.instance }}) had high RAM usage for 30 minutes.
       - alert: HighRpiDiskUsage
@@ -20,6 +22,7 @@ groups:
         for: 10m
         labels:
           severity: warning
+          source: raspberry_pi
         annotations:
           summary: Raspberry Pi ({{ $labels.instance }}) has 90% of disk space used.
       - alert: RpiDiskWillFillIn8Hours
@@ -27,6 +30,7 @@ groups:
         for: 10m
         labels:
           severity: critical
+          source: raspberry_pi
         annotations:
           summary: Disk on Raspberry Pi ({{ $labels.instance }}) will fill in 8 hours.
       - alert: HighRpiCPUTemperature
@@ -34,5 +38,6 @@ groups:
         for: 10m
         labels:
           severity: warning
+          source: raspberry_pi
         annotations:
           summary: Temperature of Raspberry Pi CPU ({{ $labels.instance }}) was above 60 degrees Celsius for 10 minutes.

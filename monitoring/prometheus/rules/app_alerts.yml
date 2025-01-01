@@ -6,6 +6,7 @@ groups:
         for: 1m
         labels:
           severity: critical
+          source: app
         annotations:
           summary: Application on node {{ $labels.instance }} is unavailable!
       - alert: HighErrorRate
@@ -13,6 +14,7 @@ groups:
         for: 1m
         labels:
           severity: warning
+          source: app
         annotations:
           summary: Application on node {{ $labels.instance }} had high error rate for 5 minutes.
       - alert: LongResponseTime
@@ -20,5 +22,6 @@ groups:
         for: 1m
         labels:
           severity: warning
+          source: app
         annotations:
           summary: Application on node {{ $labels.instance }} had long response time for 5 minutes.

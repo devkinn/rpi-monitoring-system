@@ -4,9 +4,27 @@ global:
   smtp_require_tls: false
 
 route:
-  receiver: 'email'
+  group_by: ['job']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 3h
+  receiver: operations_team
+  routes:
+  - match:
+      source: app
+    receiver: application_team
+    continue: true
+  - match:
+      source: app
+    receiver: operations_team
+  - match_re:
+      source: ^(node|raspberry_pi)$
+    receiver: operations_team
 
 receivers:
-  - name: 'email'
+  - name: 'application_team'
     email_configs:
-      - to: 'test@example.com'
+      - to: 'application-team@example.com'
+  - name: 'operations_team'
+    email_configs:
+      - to: 'operations-team@example.com'

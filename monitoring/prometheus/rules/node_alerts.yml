@@ -6,6 +6,7 @@ groups:
         for: 1m
         labels:
           severity: critical
+          source: node
         annotations:
           summary: Node {{ $labels.instance }} is unavailable!
       - alert: HighNodeCPU
@@ -13,6 +14,7 @@ groups:
         for: 1m
         labels:
           severity: warning
+          source: node
         annotations:
           summary: Node {{ $labels.instance }} had high CPU usage for 30 minutes.
       - alert: HighNodeRAM
@@ -20,6 +22,7 @@ groups:
         for: 30m
         labels:
           severity: warning
+          source: node
         annotations:
           summary: Node {{ $labels.instance }} had high RAM usage for 30 minutes.
       - alert: HighNodeDiskUsage
@@ -27,6 +30,7 @@ groups:
         for: 10m
         labels:
           severity: warning
+          source: node
         annotations:
           summary: Node {{ $labels.instance }} has 90% of disk space used.
       - alert: NodeDiskWillFillIn8Hours
@@ -34,5 +38,6 @@ groups:
         for: 10m
         labels:
           severity: critical
+          source: node
         annotations:
           summary: Disk on node {{ $labels.instance }} will fill in 8 hours.
