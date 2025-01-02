@@ -1,7 +1,7 @@
-- name: Deploy monitoring system to Raspberry Pi
+- name: Wdrożenie systemu monitorowania na Raspbrry Pi
   hosts: raspberry_pi
   tasks:
-    - name: Copy monitoring directory to Raspberry Pi
+    - name: Kopiowanie katalogu na Raspberry Pi
       ansible.builtin.copy:
         src: ../monitoring/
         dest: /home/{{ ansible_user }}/monitoring/
@@ -9,7 +9,7 @@
         group: "{{ ansible_user }}"
         mode: '0755'
         
-    - name: Run docker compose to deploy the monitoring system
+    - name: Użycie Docker Compose w celu uruchomienia systemu monitorowania
       command: docker compose up -d --force-recreate
       args:
         chdir: /home/{{ ansible_user }}/monitoring

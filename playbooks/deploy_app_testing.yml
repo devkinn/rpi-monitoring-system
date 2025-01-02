@@ -13,7 +13,7 @@
         dest: /home/{{ ansible_user }}/app/
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
-        mode: '0755'
+        mode: "0755"
 
     - name: Build and start the app using Docker Compose
       ansible.builtin.command:

@@ -5,7 +5,7 @@ import threading
 
 def generate_metrics():
     gauges = {}
-    num_series = 50000
+    num_series = 200000
     for i in range(num_series):
         gauges[i] = Gauge(f"custom_metric{i}", 'A custom metric', ['series'])
         gauges[i].labels(series=f"metric_{i}").set(random.uniform(0, 100))
