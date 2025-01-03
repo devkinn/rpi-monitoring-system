@@ -8,4 +8,4 @@ RUN pip install prometheus_client
 
 EXPOSE 8000
 
-CMD ["python", "exporter.py"]
+CMD ["python", "-u", "exporter.py"]

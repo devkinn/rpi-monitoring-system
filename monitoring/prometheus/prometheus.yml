@@ -39,9 +39,3 @@ scrape_configs:
       - files:
         - 'targets/exporter.json'
         refresh_interval: 5m
-
-  # - job_name: 'scaling'
-  #   file_sd_configs:
-  #     - files:
-  #       - 'targets/scaling.json'
-  #       refresh_interval: 5m

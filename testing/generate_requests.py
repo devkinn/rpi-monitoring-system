@@ -4,7 +4,7 @@ import time
 import argparse
 
 URLS = ["http://192.168.10.21:5000/","http://192.168.10.22:5000/","http://192.168.10.23:5000/"]
-DELAY = (0.1, 0.3)
+DELAY = (0.1, 0.2)
 
 def generate_requests(target_urls, total_requests, delay_range):
 	successful_requests = 0
@@ -12,14 +12,14 @@ def generate_requests(target_urls, total_requests, delay_range):
 
 	for i in range(total_requests):
 		target_url = random.choice(target_urls)
-		print(f"Sent request {i+1} to {target_url}: ", end="")
+		print(f"Sent request {i} to {target_url}: ", end="")
 		result = send_request(target_url)
-		if (result):
-			successful_requests += 1
-		else:
-			failed_requests += 1
+		successful_requests += result
+
 		delay = random.uniform(*delay_range)
 		time.sleep(delay)
+	
+	failed_requests = total_requests - successful_requests
 	
 	print("\nSummary:")
 	print(f"Successful: {successful_requests}")
