@@ -3,9 +3,23 @@ groups:
     rules:
       - record: node:cpu_usage:percentage 
         expr: 100 - (avg by (instance) (irate(node_cpu_seconds_total{job="node", mode="idle"}[5m])) * 100)
-      - record: node:memory_usage:percentage 
+      - record: node:cpu_saturation:tasks
+        expr: sum by (instance) (node_load1{job="node"}) / count by (instance) (node_cpu_seconds_total{job="node", mode="idle"})
+      - record: node:memory_usage:percentage
         expr: ((node_memory_MemTotal_bytes{job="node"} - (node_memory_MemAvailable_bytes{job="node"})) / node_memory_MemTotal_bytes{job="node"}) * 100
-      - record: node:filesystem_usage:percentage 
+      - record: node:swap_usage:percentage
+        expr: ((node_memory_SwapTotal_bytes{job="node"} - node_memory_SwapFree_bytes{job="node"}) / node_memory_SwapTotal_bytes{job="node"}) * 100
+      - record: node:network_throughput:bits_sec
+        expr: sum by (instance) (irate(node_network_receive_bytes_total{job="node", device="enp0s3"}[5m]) + irate(node_network_transmit_bytes_total{job="node", device="enp0s3"}[5m])) * 8
+      - record: node:network_packets_dropped:rate
+        expr: (rate(node_network_receive_drop_total{job="node", device="enp0s3"}[5m]) + rate(node_network_transmit_drop_total{job="node", device="enp0s3"}[5m]))
+      - record: node:network_packets_errors:rate
+        expr: (rate(node_network_receive_errs_total{job="node", device="enp0s3"}[5m]) + rate(node_network_transmit_errs_total{job="node", device="enp0s3"}[5m]))
+      - record: node:disk_usage:percentage
+        expr: sum by (instance) (rate(node_disk_io_time_seconds_total{job="node"}[5m])) * 100
+      - record: node:disk_saturation:tasks
+        expr: sum by (instance) (rate(node_disk_io_time_weighted_seconds_total{job="node"}[5m]))
+      - record: node:filesystem_usage:percentage
         expr: (node_filesystem_size_bytes{job="node", mountpoint="/"} - node_filesystem_free_bytes{job="node", mountpoint="/"}) / node_filesystem_size_bytes{job="node", mountpoint="/"} * 100
       - record: node:dropped_packets:rate
         expr: (rate(node_network_receive_drop_total{job="node", device="enp0s3"}[5m]) + rate(node_network_transmit_drop_total{job="node", device="enp0s3"}[5m]))

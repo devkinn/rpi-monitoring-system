@@ -1,7 +1,7 @@
 - name: Deploy custom exporter for Prometheus scaling test
   hosts: virtual_servers
   tasks:
-    - name: Stop the container if it exists
+    - name: Zatrzymanie kontenera jeżeli istnieje
       command: docker compose down
       args:
         chdir: /home/{{ ansible_user }}/testing/exporter/

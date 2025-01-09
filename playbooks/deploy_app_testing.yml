@@ -21,5 +21,5 @@
       args:
         chdir: /home/{{ ansible_user }}/app/
 
-    - name: Usunięcie starych obrazów kontenerów (w przypadku ponownego wdrożenia aplikacji po wprowadzeniu zmian)
+    - name: Usunięcie starych obrazów kontenerów
       command: docker image prune -af

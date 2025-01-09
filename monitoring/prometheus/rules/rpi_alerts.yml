@@ -1,38 +1,102 @@
 groups:
   - name: rpi_alerts
     rules:
-      - alert: HighRpiCPU
+      - alert: RpiUnavailable
+        expr: up{job="rpi"} == 0
+        for: 5m
+        labels:
+          severity: critical
+          source: rpi
+        annotations:
+          summary: Raspberry Pi {{ $labels.instance }} is unavailable!
+      - alert: HighRpiCPUUsage
         expr: rpi:cpu_usage:percentage > 80
-        for: 30m
+        for: 10m
         labels:
           severity: warning
-          source: raspberry_pi
+          source: rpi
         annotations:
-          summary: Raspberry Pi ({{ $labels.instance }}) had high CPU usage for 30 minutes.
+          summary: Raspberry Pi {{ $labels.instance }} had high CPU usage for 10 minutes.
+      - alert: HighRpiCPUSaturation
+        expr: rpi:cpu_saturation:tasks > 2
+        for: 5m
+        labels:
+          severity: warning
+          source: rpi
+        annotations:
+          summary: Raspberry Pi {{ $labels.instance }} had high CPU saturation for 5 minutes.
       - alert: HighRpiRAM
         expr: rpi:memory_usage:percentage > 80
-        for: 30m
+        for: 10m
         labels:
           severity: warning
-          source: raspberry_pi
+          source: rpi
         annotations:
-          summary: Raspberry Pi ({{ $labels.instance }}) had high RAM usage for 30 minutes.
+          summary: Raspberry Pi {{ $labels.instance }} had high RAM usage for 10 minutes.
+      - alert: HighRpiSWAPUsage
+        expr: rpi:swap_usage:percentage > 20
+        for: 10m
+        labels:
+          severity: warning
+          source: rpi
+        annotations:
+          summary: Raspberry Pi {{ $labels.instance }} had high SWAP usage for 10 minutes.
+      - alert: NetworkInterfaceMaxThroughput
+        expr: rpi:network_throughput:bits_sec > 9500000000 # Dla interfejsu o przepustowości 1 Gb/s
+        for: 10m
+        labels:
+          severity: warning
+          source: rpi
+        annotations:
+          summary: Raspberry Pi {{ $labels.instance }} was at almost max interface throughput for 10 minutes.
+      - alert: HighRpiPacketDropped
+        expr: rpi:network_packets_dropped:rate > 10
+        for: 10m
+        labels:
+          severity: warning
+          source: rpi
+        annotations:
+          summary: Raspberry Pi {{ $labels.instance }} had a significant number of dropped packets for 10 minutes.    
+      - alert: HighRpiPacketError
+        expr: rpi:network_packets_errors:rate > 10
+        for: 10m
+        labels:
+          severity: warning
+          source: rpi
+        annotations:
+          summary: Raspberry Pi {{ $labels.instance }} had a significant number of packets with errors for 10 minutes.  
       - alert: HighRpiDiskUsage
+        expr: rpi:disk_usage:percentage > 90
+        for: 5m
+        labels:
+          severity: warning
+          source: rpi
+        annotations:
+          summary: Raspberry Pi {{ $labels.instance }} had high disk usage for 5 minutes.       
+      - alert: HighRpiDiskSaturation
+        expr: rpi:disk_saturation:tasks > 5
+        for: 10m
+        labels:
+          severity: warning
+          source: rpi
+        annotations:
+          summary: Raspberry Pi {{ $labels.instance }} had high disk saturation for 10 minutes.    
+      - alert: HighRpiDiskSpaceUsed
         expr: rpi:filesystem_usage:percentage > 90
         for: 10m
         labels:
           severity: warning
-          source: raspberry_pi
+          source: rpi
         annotations:
-          summary: Raspberry Pi ({{ $labels.instance }}) has 90% of disk space used.
+          summary: Raspberry Pi {{ $labels.instance }} has 90% of disk space used.
       - alert: RpiDiskWillFillIn8Hours
         expr: predict_linear(node_filesystem_free_bytes{job="rpi", mountpoint="/"}[1h], 8*3600) < 0
         for: 10m
         labels:
           severity: critical
-          source: raspberry_pi
+          source: rpi
         annotations:
-          summary: Disk on Raspberry Pi ({{ $labels.instance }}) will fill in 8 hours.
+          summary: Disk on Raspberry Pi {{ $labels.instance }} will fill in 8 hours.
       - alert: HighRpiCPUTemperature
         expr: node_thermal_zone_temp{job="rpi", type="cpu-thermal"} > 60
         for: 10m

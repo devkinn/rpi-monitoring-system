@@ -18,13 +18,13 @@ groups:
         annotations:
           summary: Node {{ $labels.instance }} had high CPU usage for 10 minutes.
       - alert: HighNodeCPUSaturation
-        expr: node:cpu_usage:percentage > 80 ###!!
-        for: 10m
+        expr: node:cpu_saturation:tasks > 2
+        for: 5m
         labels:
           severity: warning
           source: node
         annotations:
-          summary: Node {{ $labels.instance }} had high CPU saturation for 10 minutes.
+          summary: Node {{ $labels.instance }} had high CPU saturation for 5 minutes.
       - alert: HighNodeRAM
         expr: node:memory_usage:percentage > 80
         for: 10m
@@ -34,7 +34,7 @@ groups:
         annotations:
           summary: Node {{ $labels.instance }} had high RAM usage for 10 minutes.
       - alert: HighNodeSWAPUsage
-        expr: node:memory_usage:percentage > 80 ###!!
+        expr: node:swap_usage:percentage > 20
         for: 10m
         labels:
           severity: warning
@@ -42,7 +42,7 @@ groups:
         annotations:
           summary: Node {{ $labels.instance }} had high SWAP usage for 10 minutes.
       - alert: NetworkInterfaceMaxThroughput
-        expr: node:memory_usage:percentage > 80 ###!!
+        expr: node:network_throughput:bits_sec > 9500000000 # Dla interfejsu o przepustowości 1 Gb/s
         for: 10m
         labels:
           severity: warning
@@ -50,7 +50,7 @@ groups:
         annotations:
           summary: Node {{ $labels.instance }} was at almost max interface throughput for 10 minutes.
       - alert: HighNodePacketDropped
-        expr: node:memory_usage:percentage > 80 ###!!
+        expr: node:network_packets_dropped:rate > 10
         for: 10m
         labels:
           severity: warning
@@ -58,13 +58,29 @@ groups:
         annotations:
           summary: Node {{ $labels.instance }} had a significant number of dropped packets for 10 minutes.    
       - alert: HighNodePacketError
-        expr: node:memory_usage:percentage > 80 ###!!
+        expr: node:network_packets_errors:rate > 10
         for: 10m
         labels:
           severity: warning
           source: node
         annotations:
-          summary: Node {{ $labels.instance }} had a significant number of packets with errors for 10 minutes.              
+          summary: Node {{ $labels.instance }} had a significant number of packets with errors for 10 minutes.  
+      - alert: HighNodeDiskUsage
+        expr: node:disk_usage:percentage > 90
+        for: 5m
+        labels:
+          severity: warning
+          source: node
+        annotations:
+          summary: Node {{ $labels.instance }} had high disk usage for 5 minutes.       
+      - alert: HighNodeDiskSaturation
+        expr: node:disk_saturation:tasks > 5
+        for: 10m
+        labels:
+          severity: warning
+          source: node
+        annotations:
+          summary: Node {{ $labels.instance }} had high disk saturation for 10 minutes.    
       - alert: HighNodeDiskSpaceUsed
         expr: node:filesystem_usage:percentage > 90
         for: 10m
