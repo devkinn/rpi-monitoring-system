@@ -34,8 +34,8 @@ scrape_configs:
         - 'targets/app.json'
         refresh_interval: 5m
 
-  - job_name: 'exporter'
+  - job_name: 'exporter_v2'
     file_sd_configs:
       - files:
-        - 'targets/exporter.json'
+        - 'targets/exporter_v2.json'
         refresh_interval: 5m

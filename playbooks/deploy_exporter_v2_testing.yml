@@ -1,0 +1,25 @@
+- name: Deploy custom exporter for Prometheus scaling test
+  hosts: virtual_servers
+  tasks:
+    - name: Stop the container if it exists
+      command: docker compose down
+      args:
+        chdir: /home/{{ ansible_user }}/testing/exporter_v2/
+      ignore_errors: true
+
+    - name: Copy exporter directory to remote servers
+      ansible.builtin.copy:
+        src: ../testing/exporter_v2/
+        dest: /home/{{ ansible_user }}/testing/exporter_v2/
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: '0755'
+
+    - name: Build and start the exporter using Docker Compose
+      ansible.builtin.command:
+        cmd: docker compose up --build -d
+      args:
+        chdir: /home/{{ ansible_user }}/testing/exporter_v2/
+
+    - name: Remove old Docker images
+      command: docker image prune -af

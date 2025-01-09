@@ -1,0 +1,8 @@
+- name: disable cadvisor
+  hosts: virtual_servers
+  tasks:
+    - name: Zatrzymanie kontenera jeżeli istnieje
+      command: docker compose down
+      args:
+        chdir: /home/{{ ansible_user }}/docker/cadvisor
+      ignore_errors: true

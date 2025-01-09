@@ -19,7 +19,7 @@ def unregister_metrics(metrics, registry):
 def expose_metrics():
     start_http_server(8000, registry=registry)
     batch_metric_count = 50000
-    batch_count = 40
+    batch_count = 50
 
     for i in range(batch_count):
         prefix = f"batch_{i}"

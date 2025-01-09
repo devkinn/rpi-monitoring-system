@@ -3,25 +3,33 @@ groups:
     rules:
       - alert: AppUnavailable
         expr: up{job="app"} == 0
-        for: 1m
+        for: 5m
         labels:
           severity: critical
           source: app
         annotations:
           summary: Application on node {{ $labels.instance }} is unavailable!
+      - alert: LowRequestRate
+        expr: app:request:rate < 0.5
+        for: 1m
+        labels:
+          severity: warning
+          source: app
+        annotations:
+          summary: Application on node {{ $labels.instance }} had low request rate for 1 minute.
       - alert: HighErrorRate
         expr: app:errors:rate > 0.2
         for: 1m
         labels:
-          severity: warning
+          severity: critical
           source: app
         annotations:
-          summary: Application on node {{ $labels.instance }} had high error rate for 5 minutes.
-      - alert: LongResponseTime
-        expr: app:response_time:rate_quantile09 > 1
+          summary: Application on node {{ $labels.instance }} had high error rate for 1 minute.
+      - alert: High09QuantileResponseTime
+        expr: app:response_time:rate_quantile09 > 0.5
         for: 1m
         labels:
           severity: warning
           source: app
         annotations:
-          summary: Application on node {{ $labels.instance }} had long response time for 5 minutes.
+          summary: Application on node {{ $labels.instance }} had long response time for 1 minute.

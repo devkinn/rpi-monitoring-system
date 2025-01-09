@@ -1,0 +1,13 @@
+services:
+  exporter:
+    build: .
+    deploy:
+      replicas: 50
+    ports:
+      - "9500-9550:8000"
+    networks:
+      - exporter-v2-network
+
+networks:
+  exporter-v2-network:
+    driver: bridge

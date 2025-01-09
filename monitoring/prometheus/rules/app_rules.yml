@@ -1,6 +1,8 @@
 groups:
   - name: app_rules
     rules:
+      - record: app:request:rate
+        expr: rate(app_requests_total[5m])
       - record: app:errors:rate
         expr: rate(app_errors_total[5m])
       - record: app:response_time:rate_quantile09

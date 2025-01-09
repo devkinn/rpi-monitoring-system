@@ -4,9 +4,8 @@ import time
 import argparse
 
 URLS = ["http://192.168.10.21:5000/","http://192.168.10.22:5000/","http://192.168.10.23:5000/"]
-DELAY = (0.1, 0.2)
 
-def generate_requests(target_urls, total_requests, delay_range):
+def generate_requests(target_urls, total_requests):
 	successful_requests = 0
 	failed_requests = 0
 
@@ -15,9 +14,6 @@ def generate_requests(target_urls, total_requests, delay_range):
 		print(f"Sent request {i} to {target_url}: ", end="")
 		result = send_request(target_url)
 		successful_requests += result
-
-		delay = random.uniform(*delay_range)
-		time.sleep(delay)
 	
 	failed_requests = total_requests - successful_requests
 	
@@ -49,4 +45,4 @@ if __name__ == "__main__":
 		help="Number of requests to send (default: %(default)s)."
 	)
 	args = parser.parse_args()
-	generate_requests(URLS, args.requests, DELAY)
+	generate_requests(URLS, args.requests)
