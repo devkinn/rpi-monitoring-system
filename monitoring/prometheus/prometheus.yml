@@ -39,3 +39,11 @@ scrape_configs:
       - files:
         - 'targets/exporter_v2.json'
         refresh_interval: 5m
+
+  # - job_name: 'docker_rpi'
+  #   static_configs:
+  #     - targets: ['192.168.10.10:9323']
+
+  - job_name: 'cadvisor_rpi'
+    static_configs:
+      - targets: ['cadvisor:8080']

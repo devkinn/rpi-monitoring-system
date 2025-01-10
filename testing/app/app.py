@@ -13,13 +13,13 @@ REQUEST_DURATION = Histogram("app_request_duration_seconds", "Duration of reques
 def listen():
     start_time = time.time()
     method = "GET"
+    REQUEST_COUNT.labels(method=method).inc()
     
     if random.random() < 0.5:
         ERROR_COUNT.labels(method=method).inc()
         return jsonify({"message": "Request error"}), 500
 
     time.sleep(random.uniform(0.4, 1.0))
-    REQUEST_COUNT.labels(method=method).inc()
     duration = time.time() - start_time
     REQUEST_DURATION.labels(method=method).observe(duration)
     

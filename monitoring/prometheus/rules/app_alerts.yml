@@ -18,7 +18,7 @@ groups:
         annotations:
           summary: Application on node {{ $labels.instance }} had low request rate for 1 minute.
       - alert: HighErrorRate
-        expr: app:errors:rate > 0.2
+        expr: app:errors:rate > 0.1
         for: 1m
         labels:
           severity: critical
