@@ -7,7 +7,7 @@
         dest: /home/{{ ansible_user }}/monitoring/
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
-        mode: '0755'
+        mode: "0755"
         
     - name: Użycie Docker Compose w celu uruchomienia systemu monitorowania
       command: docker compose up -d --force-recreate

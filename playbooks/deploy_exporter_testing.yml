@@ -1,4 +1,4 @@
-- name: Deploy custom exporter for Prometheus scaling test
+- name: Wdrożenie drugiej wersji własnego eksportera do testowania wydajności
   hosts: virtual_servers
   tasks:
     - name: Zatrzymanie kontenera jeżeli istnieje
@@ -7,19 +7,19 @@
         chdir: /home/{{ ansible_user }}/testing/exporter/
       ignore_errors: true
 
-    - name: Copy exporter directory to remote servers
+    - name: Kopiowanie katalogu z kodem eksportera
       ansible.builtin.copy:
         src: ../testing/exporter/
         dest: /home/{{ ansible_user }}/testing/exporter/
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
-        mode: '0755'
+        mode: "0755"
 
-    - name: Build and start the exporter using Docker Compose
+    - name: Budowanie i uruchomienie kontenera za pomocą Docker Compose
       ansible.builtin.command:
         cmd: docker compose up --build -d
       args:
         chdir: /home/{{ ansible_user }}/testing/exporter/
 
-    - name: Remove old Docker images
+    - name: Usunięcie starych obrazów kontenerów
       command: docker image prune -af

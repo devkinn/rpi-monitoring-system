@@ -7,7 +7,6 @@ def generate_metrics(count):
     for i in range(count):
         metric = Gauge(f"metric_{i}", "Custom metric")
         metric.set(random.uniform(0, 100))
-
         metrics.append(metric)
     return metrics
 
