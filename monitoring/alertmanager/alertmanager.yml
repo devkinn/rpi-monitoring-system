@@ -18,7 +18,7 @@ route:
       source: app
     receiver: operations_team
   - match_re:
-      source: ^(node|raspberry_pi)$
+      source: ^(node|rpi)$
     receiver: operations_team
 
 receivers:
